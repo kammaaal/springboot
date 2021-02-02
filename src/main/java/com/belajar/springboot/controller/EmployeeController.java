@@ -1,5 +1,6 @@
 package com.belajar.springboot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,17 @@ public class EmployeeController {
 	@GetMapping(path = "/getall", produces = "application/json")
 	public ResponseEntity<?> getAll() {
 		List<Employee> employees = employeeRepo.findAll();
-		return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
+		
+		List <EmployeePayload> response = new ArrayList<EmployeePayload>();
+		for (Employee employee : employees) {
+			response.add(new EmployeePayload(
+					employee.getName(), 
+					employee.getAddress(), 
+					employee.getNik(), 
+					employee.getPosition().getPositionName()));
+		}
+		
+		return new ResponseEntity<List<EmployeePayload>>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/get/{id}", produces = "application/json")
@@ -49,6 +60,7 @@ public class EmployeeController {
 
 	@PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> createEmployee(@RequestBody EmployeePayload payload) {
+		
 		Position position = positionRepo.findByPositionNameIgnoreCase(payload.getPosition());
 		if (position == null) {
 			return new ResponseEntity<ErrorResponse>(new ErrorResponse(
