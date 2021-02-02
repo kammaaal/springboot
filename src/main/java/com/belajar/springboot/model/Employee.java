@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "employee")
-public class Employee {
+public class Employee extends Persistence {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

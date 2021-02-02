@@ -12,6 +12,14 @@ public class EmployeePayload {
 	@JsonProperty("position")
 	private String position;
 	
+	public EmployeePayload(String name, String address, int nik, String position) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.nik = nik;
+		this.position = position;
+	}
+	
 	public String getName() {
 		return name;
 	}
